@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  paperless-sync:
+    build: .
+    container_name: paperless-sync
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    restart: "no"
