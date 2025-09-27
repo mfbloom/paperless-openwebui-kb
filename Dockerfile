@@ -1,14 +1,23 @@
-FROM python:3.11-slim
+# Install uv
+FROM python:3.12-slim
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-RUN apt-get update && apt-get install -y --no-install-recommends     build-essential     ca-certificates     && rm -rf /var/lib/apt/lists/*
-
+# Change the working directory to the `app` directory
 WORKDIR /app
-COPY requirements.txt /app
-RUN pip install -r requirements.txt
 
-RUN mkdir -p /data
+# Install dependencies
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --locked --no-install-project
 
-COPY . /app
+# Copy the project into the image
+ADD . /app
+
+# Sync the project
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked
 
 ENV OUT_DIR=/app/data
-ENTRYPOINT ["python", "-u", "main.py"]
+
+ENTRYPOINT ["uv", "run", "main.py"]

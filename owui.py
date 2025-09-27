@@ -11,23 +11,23 @@ class OWUIClient:
         self.token = token
         self.headers = {"Authorization": f"Bearer {self.token}"} if token else {}
 
-    @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=10))
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=2))
     async def upload_file(self, file_path: str) -> Dict[str, Any]:
         url = f"{self.base}/api/v1/files/"
         async with httpx.AsyncClient(timeout=5) as client:
             with open(file_path, "rb") as fh:
                 files = {"file": (file_path, fh)}
                 resp = await client.post(url, headers=self.headers, files=files)
+                
             resp.raise_for_status()
             logger.info(f"Uploaded {file_path}.")
+
             return resp.json()
 
-    @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=10))
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=2))
     async def attach_to_kb(self, kb_id: str, file_id: str) -> Dict[str, Any]:
         url = f"{self.base}/api/v1/knowledge/{kb_id}/file/add"
         payload = {"file_id": file_id}
-
-        logger.info(f"{file_id}")
 
         async with httpx.AsyncClient(timeout=10) as client:
             resp = await client.post(

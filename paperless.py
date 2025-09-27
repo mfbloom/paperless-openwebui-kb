@@ -19,6 +19,7 @@ class PaperlessClient:
     async def _get(self, client: httpx.AsyncClient, url: str) -> Dict[str, Any]:
         resp = await client.get(url, headers=self._headers, timeout=self.timeout)
         resp.raise_for_status()
+        
         return resp.json()
 
     async def iter_documents(self, limit: int = 0) -> AsyncIterator[Dict[str, Any]]:
