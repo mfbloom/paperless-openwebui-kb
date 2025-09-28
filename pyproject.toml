@@ -5,6 +5,8 @@ description = "Sync documents from paperless-ngx to openwebui kb for RAG context
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "elastic-apm>=6.24.0",
+    "fastapi>=0.117.1",
     "httpx[http2]>=0.28.1",
     "python-dotenv>=1.1.1",
     "python-slugify>=8.0.4",
@@ -12,4 +14,5 @@ dependencies = [
     "tenacity>=9.1.2",
     "tqdm>=4.67.1",
     "typer>=0.19.2",
+    "uvicorn>=0.37.0",
 ]

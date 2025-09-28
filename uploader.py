@@ -12,7 +12,6 @@ def read_hash_from_md(path: Path) -> Optional[str]:
     m = re.search(r"""content_sha256:\s*['"]?([0-9a-f]{64})['"]?""", text)
     return m.group(1) if m else None
 
-
 class Uploader:
     def __init__(self, owui_client: OWUIClient, kb_id: str, mark_dir: Path, concurrency: int = 4):
         self.client = owui_client

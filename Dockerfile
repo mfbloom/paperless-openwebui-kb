@@ -20,4 +20,5 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 ENV OUT_DIR=/app/data
 
-ENTRYPOINT ["uv", "run", "main.py"]
+EXPOSE 8081
+ENTRYPOINT ["uv", "run", "main.py", "serve"]

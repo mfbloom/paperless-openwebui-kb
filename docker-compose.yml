@@ -2,6 +2,8 @@ services:
   paperless-sync:
     build: .
     container_name: paperless-sync
+    ports:
+     - 8081:8081
     env_file:
       - .env
     volumes:
